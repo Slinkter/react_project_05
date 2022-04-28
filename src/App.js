@@ -1,74 +1,63 @@
+import React, { useState, useReducer } from "react";
+import Modal from "./Modal";
+import { data } from "./data";
+import { reducer } from "./reducer";
 import "./App.css";
 
-import React, { useState, useEffect } from "react";
+const defaultState = {
+  people: [],
+  isModalOpen: false,
+  modalContent: "",
+};
 
 function App() {
-  const [person, setPerson] = useState({ name: "", email: "", age: "" });
-  const [people, setPeople] = useState([]);
-
-  const handleChange = (e) => {
+  const [name, setName] = useState("");
+  const [state, dispatch] = useReducer(reducer, defaultState);
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const name = e.target.name;
-    const value = e.target.value;
-    setPerson({ ...person, [name]: value });
-    console.log(name);
-    console.log(value);
+    if (name) {
+      const newItem = { id: new Date().getTime().toString(), name };
+      dispatch({ type: "ADD_ITEM", payload: newItem });
+      setName("");
+    } else {
+      dispatch({ type: "NO_VALUE" });
+    }
   };
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    if (person.name && person.email && person.age) {
-      const newPerson = { ...person, id: new Date().getTime().toString() };
-      setPeople([...people, newPerson]);
-      setPerson({ name: "", email: "", age: "" });
-    }
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
   };
 
   return (
     <>
+      {state.isModalOpen && (
+        <Modal closeModal={closeModal} modalContent={state.modalContent} />
+      )}
+
       <div className="container">
-        <form className="form">
-          <div className="form-control">
-            <label htmlFor="name"> Name:</label>
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="">
             <input
               type="text"
-              id="name"
-              name="name"
-              value={person.name}
-              onChange={handleChange}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
+            <button type="submit">Add</button>
           </div>
-          <div className="form-control">
-            <label> Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={person.email}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-control">
-            <label> Age:</label>
-            <input
-              type="number"
-              id="age"
-              name="age"
-              value={person.age}
-              onChange={handleChange}
-            />
-          </div>
-          <button className="btn" onClick={handleClick}>
-            Add
-          </button>
         </form>
-        {people.map((person) => {
-          const { id, name, email, age } = person;
+
+        {state.people.map((person) => {
+          const { id, name } = person;
           return (
-            <div key={id} className="item">
-              <h4> {name} </h4>
-              <h4> {email} </h4>
-              <h4> {age} </h4>
+            <div key={id} className='item'>
+              <h4> {name}</h4>
+              <button
+                onClick={() => {
+                  dispatch({ type: "REMOVE_ITEM", payload: id });
+                }}
+              >
+                remove
+              </button>
             </div>
           );
         })}

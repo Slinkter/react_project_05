@@ -3,16 +3,18 @@ import Modal from "./Modal";
 import { data } from "./data";
 import { reducer } from "./reducer";
 import "./App.css";
-
+/*  */
 const defaultState = {
   people: [],
   isModalOpen: false,
   modalContent: "",
 };
-
+/*  */
 function App() {
+  //
   const [name, setName] = useState("");
   const [state, dispatch] = useReducer(reducer, defaultState);
+  //
   const handleSubmit = (e) => {
     e.preventDefault();
     if (name) {
@@ -23,11 +25,11 @@ function App() {
       dispatch({ type: "NO_VALUE" });
     }
   };
-
+  //
   const closeModal = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };
-
+  //
   return (
     <>
       {state.isModalOpen && (
@@ -49,7 +51,7 @@ function App() {
         {state.people.map((person) => {
           const { id, name } = person;
           return (
-            <div key={id} className='item'>
+            <div key={id} className="item">
               <h4> {name}</h4>
               <button
                 onClick={() => {

@@ -3,66 +3,76 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 
 function App() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [list, setList] = useState([]);
+  const [person, setPerson] = useState({ name: "", email: "", age: "" });
+  const [people, setPeople] = useState([]);
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const name = e.target.name;
+    const value = e.target.value;
+    setPerson({ ...person, [name]: value });
+    console.log(name);
+    console.log(value);
+  };
 
   const handleClick = (e) => {
     e.preventDefault();
-    console.log("hola click");
-
-    if (name && email) {
-      const newItem = { id: new Date().getTime().toString(), name, email };
-      setList((list) => {
-        return [...list, newItem];
-      });
-
-      setName("");
-      setEmail("");
-    } else {
-      console.log("empty values");
+    if (person.name && person.email && person.age) {
+      const newPerson = { ...person, id: new Date().getTime().toString() };
+      setPeople([...people, newPerson]);
+      setPerson({ name: "", email: "", age: "" });
     }
   };
 
   return (
     <>
-      <article className="container">
-        <form className="form" onSubmit={handleClick}>
+      <div className="container">
+        <form className="form">
           <div className="form-control">
-            <label htmlFor="name"> Name :</label>
+            <label htmlFor="name"> Name:</label>
             <input
               type="text"
               id="name"
               name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={person.name}
+              onChange={handleChange}
             />
           </div>
           <div className="form-control">
-            <label htmlFor="email"> email :</label>
+            <label> Email:</label>
             <input
               type="email"
               id="email"
               name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={person.email}
+              onChange={handleChange}
             />
           </div>
-
-          <button type="submit" className="btn">
-            add
+          <div className="form-control">
+            <label> Age:</label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              value={person.age}
+              onChange={handleChange}
+            />
+          </div>
+          <button className="btn" onClick={handleClick}>
+            Add
           </button>
         </form>
-        {list.map((item) => {
-          const { id, name, email } = item;
+        {people.map((person) => {
+          const { id, name, email, age } = person;
           return (
             <div key={id} className="item">
-              <h2> {name}</h2>
-              <p> {email}</p>
+              <h4> {name} </h4>
+              <h4> {email} </h4>
+              <h4> {age} </h4>
             </div>
           );
         })}
-      </article>
+      </div>
     </>
   );
 }

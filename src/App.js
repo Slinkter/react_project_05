@@ -1,26 +1,22 @@
 import "./App.css";
 
 import React, { useState, useEffect } from "react";
-const url = "https://api.github.com/users/QuincyLarson";
 
 function App() {
-  const [text, setText] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [show, setShow] = useState(false);
 
-  const btn_activeError = ()=> {   
-    setIsError(!isError);
+  const Item = () => {
+    return <h1> Esto es un mensaje </h1>;
+  };
 
-  }
-  console.log(isError);
   return (
-    <div className="App">
-      <h1> hola mundo </h1>
-      <div className="container">
-        <h1> {text || 'default title'}</h1>
-        <button className="btn" onClick={()=> { btn_activeError()}}> click me </button>
-        {isError && (<h1>Error activado </h1>)}
-        {isError ?  <p>'el error se ha activado'</p>  : <p>'sin errores '</p> }
-      </div>
+    <div className="container">
+      <h1> Show/Hide </h1>
+      <button className="btn" onClick={() => setShow(!show)}>
+        click me
+      </button>
+      {show || <Item />}
+   
     </div>
   );
 }

@@ -5,12 +5,14 @@ import "./App.css";
 const url = "https://course-api.com/react-prop-types-example";
 
 function App() {
+  //
+
   const { products } = useFetch(url);
 
   return (
     <React.Fragment>
-      <div className="container">
-        <h2>producto</h2>
+      <div className="container ">
+        <h2> Productos</h2>
         <section className="products">
           {products.map((product) => {
             return <Product key={product.id} {...product} />;

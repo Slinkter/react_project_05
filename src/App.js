@@ -1,48 +1,22 @@
-import React, { useState, useReducer } from "react";
-import Modal from "./Modal";
-import { data } from "./data";
-import { reducer } from "./reducer";
+import React from "react";
+import Product from "./Product";
+import { useFetch } from "./useFetch";
 import "./App.css";
+const url = "https://course-api.com/react-prop-types-example";
 
 function App() {
-  const [people, setPeople] = useState(data);
-  const removePerson = (id) => {
-    setPeople((people) => {
-      return people.filter((person) => person.id !== id);
-    });
-  };
-
-  const List = ({ people, removePerson }) => {
-    return (
-      <div>
-        {people.map((person) => {
-          return (
-            <SinglePerson
-              key={person.id}
-              {...person}
-              removePerson={removePerson}
-            />
-          );
-        })}
-      </div>
-    );
-  };
-
-  const SinglePerson = ({ id, name, removePerson }) => {
-    return (
-      <div key={id} className="item">
-        <h4>{name}</h4>
-        <button onClick={() => removePerson(id)}>remove</button>
-      </div>
-    );
-  };
+  const { products } = useFetch(url);
 
   return (
     <React.Fragment>
-      <section>
-        <h3> prop drilling</h3>
-        <List people={people} removePerson={removePerson} />
-      </section>
+      <div className="container">
+        <h2>producto</h2>
+        <section className="products">
+          {products.map((product) => {
+            return <Product key={product.id} {...product} />;
+          })}
+        </section>
+      </div>
     </React.Fragment>
   );
 }

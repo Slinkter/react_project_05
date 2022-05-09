@@ -2,14 +2,15 @@ import { useState, useEffect, useCallback } from "react";
 
 export const useFetch = (url) => {
   const [loading, setLoading] = useState(true);
-  const [products, setProducto] = useState([]);
+
+  const [products, setProduct] = useState([]);
 
   const getProduct = useCallback(async () => {
     const response = await fetch(url);
-    const productos = await response.json();
-    setProducto(productos);
+    const products = await response.json();
+    setProduct(products);
     setLoading(false);
-  },[url]);
+  }, [url]);
 
   useEffect(() => {
     getProduct();

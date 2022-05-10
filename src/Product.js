@@ -2,7 +2,7 @@ import React from "react";
 import PropType from "prop-types";
 import defaultImage from "./default-image.jpeg";
 function Product(props) {
-  const { id, image, name, price } = props;
+  const {  image, name, price } = props;
   const url = image && image.url;
 
   return (
